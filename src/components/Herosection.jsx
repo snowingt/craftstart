@@ -1,7 +1,9 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box";
 import React from "react";
+import { Image } from "@mui/icons-material";
+import ergoImg from "../assets/ergoImg1.webp";
 
 export const Herosection = () => {
   return (
@@ -14,45 +16,71 @@ export const Herosection = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100vh",
+            marginTop: "4.5rem",
           }}
         >
           <Grid item xs={12} md={6}>
             <Typography
               variant="h3"
               sx={{
-                fontFamily: "monospace",
-                fontWeight: 700,
+                fontFamily: "poppins",
+                fontWeight: "600",
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
+                fontSize: "2.5rem",
+                lineHeight: "1.2",
+                textTransform: "uppercase",
+                marginBottom: "1rem",
               }}
             >
-              Take care of your performance every day.
+              ErgoCode: Tu Compañero de Programación Saludable
             </Typography>
-            <Typography variant="h5">
-              Build a well-presented brand that everyone will love. Take care to
-              develop resources continually and integrity them with previous
-              projects.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Box
+            <Typography
+              variant="h5"
               sx={{
-                bgcolor: "#f5f4f4",
-                p: 8,
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
+                fontFamily: "roboto",
+                fontWeight: "400",
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+                fontSize: "1.5rem",
+                lineHeight: "1.2",
+                textTransform: "uppercase",
+                marginBottom: "1rem",
               }}
             >
-              <Skeleton
-                sx={{ bgcolor: "grey.900" }}
-                variant="rectangular"
-                width={210}
-                height={118}
-              />
-            </Box>
+              Domina la Postura Perfecta y Eleva tu Productividad con Comodidad
+              y Estilo
+            </Typography>
+            <Grid item xs={12} md={6}>
+              <Button fullWidth variant="outlined" color="primary">
+                Ir a la App
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "1rem",
+            }}
+          >
+            <Box
+              component="img"
+              sx={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "1rem",
+              }}
+              alt="The house from the offer."
+              src={ergoImg}
+            />
           </Grid>
         </Grid>
       </Container>
