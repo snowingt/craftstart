@@ -7,101 +7,127 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import DialogActions from "@mui/material/DialogActions";
+import { Grid } from "@mui/material";
 
 const TemporizadorCiclos = () => {
   const [horasTrabajo, setHorasTrabajo] = useState(1);
   const [tiempoRestante, setTiempoRestante] = useState(0);
-  const [cicloActual, setCicloActual] = useState("Trabajo");
-  const [cicloIniciado, setCicloIniciado] = useState(false);
-  const [pausaAbierta, setPausaAbierta] = useState(false);
+  const [cicloActual, setCicloActual] = useState("Pausa");
+  const [cicloIniciado, setCicloIniciado] = useState(true);
 
+  //crea un temporizador que se ejecuta cada segundo y actualiza el tiempo restante
   useEffect(() => {
-    let intervalId;
-
-    const iniciarTemporizador = () => {
-      intervalId = setInterval(() => {
-        if (tiempoRestante === 0) {
-          if (cicloActual === "Trabajo") {
-            // Trabajo de 50 minutos
-            setTiempoRestante(10 * 60);
-            setCicloActual("Descanso");
-            setPausaAbierta(true);
-          } else {
-            // Descanso de 10 minutos después del trabajo
-            setTiempoRestante(10 * 60);
-            setCicloActual("Trabajo");
-          }
-        } else {
-          setTiempoRestante(tiempoRestante - 1);
-        }
-      }, 1);
-    };
+    let temporizador;
 
     if (cicloIniciado) {
-      iniciarTemporizador();
-    } else {
-      clearInterval(intervalId);
+      temporizador = setInterval(() => {
+        setTiempoRestante((tiempoRestante) => tiempoRestante - 1);
+      }, 1000); // Cambié el intervalo a 1000ms (1 segundo) para que el contador sea más realista.
     }
 
-    return () => clearInterval(intervalId);
-  }, [tiempoRestante, cicloActual, cicloIniciado]);
-
-  const handleInicioPausaCiclo = () => {
-    if (!cicloIniciado) {
-      setCicloIniciado(true);
-      setTiempoRestante(50 * 60); // Iniciar con un ciclo de trabajo de 50 minutos
-    } else {
-      if (tiempoRestante === 0) {
-        setPausaAbierta(true);
+    return () => {
+      if (temporizador) {
+        clearInterval(temporizador);
       }
-      setCicloIniciado(false);
-    }
-  };
+    };
+  }, [cicloIniciado]);
 
-  const handleAceptarPausa = () => {
-    setPausaAbierta(false);
-    setTiempoRestante(10 * 60); // Continuar con un ciclo de trabajo de 10 minutos
-    setCicloActual("Trabajo");
+  //actualiza el ciclo actual y el tiempo restante cuando el temporizador llega a 0
+  useEffect(() => {
+    if (tiempoRestante === 0) {
+      setCicloIniciado(!cicloIniciado);
+
+      if (cicloActual === "Pausa") {
+        setCicloIniciado(!cicloIniciado);
+        setCicloActual("Trabajo");
+        setTiempoRestante(3000);
+      } else if (cicloActual === "Trabajo") {
+        setCicloActual("Pausa");
+        setTiempoRestante(600);
+        alert("¡Hora de descansar!");
+      }
+    }
+  }, [tiempoRestante, cicloActual]);
+  const handleInicioPausaCiclo = () => {
+    setCicloIniciado(!cicloIniciado);
+  };
+  const handleReinicioCiclo = () => {
+    setCicloIniciado(false);
+    if (cicloActual === "Trabajo") {
+      setTiempoRestante(3000);
+    } else if (cicloActual === "Pausa") {
+      setTiempoRestante(600);
+    }
   };
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        Contador de Ciclos de Trabajo
-      </Typography>
-      <Typography variant="h5">
-        Horas de Trabajo: {horasTrabajo} hora(s)
-      </Typography>
-      <Typography variant="h5">Ciclo Actual: {cicloActual}</Typography>
-      <Typography variant="h5">
-        Tiempo Restante: {Math.floor(tiempoRestante / 60)}:
-        {(tiempoRestante % 60).toLocaleString("en-US", {
-          minimumIntegerDigits: 2,
-        })}
-      </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleInicioPausaCiclo}
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: "poppins",
+              fontWeight: "600",
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+              fontSize: "2.5rem",
+              lineHeight: "1.2",
+              textTransform: "uppercase",
+              marginBottom: "1rem",
+            }}
+          >
+            {cicloActual}
+          </Typography>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: "poppins",
+              fontWeight: "400",
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+              fontSize: "2.5rem",
+              lineHeight: "1.2",
+              textTransform: "uppercase",
+              marginBottom: "1rem",
+            }}
+          >
+            {Math.floor(tiempoRestante / 60)}:
+            {tiempoRestante % 60 < 10
+              ? `0${tiempoRestante % 60}`
+              : tiempoRestante % 60}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid
+        sx={{
+          marginTop: "1rem",
+          gap: "1rem",
+        }}
+        container
+        spacing={2}
       >
-        {cicloIniciado ? "Pausar Ciclo" : "Iniciar Ciclo"}
-      </Button>
-      <Dialog open={pausaAbierta}>
-        <DialogTitle>¡Toma una pausa de 10 minutos!</DialogTitle>
-        <IconButton
-          edge="end"
-          color="inherit"
-          onClick={() => setPausaAbierta(false)}
-          aria-label="close"
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogActions>
-          <Button onClick={handleAceptarPausa} color="primary" autoFocus>
-            Aceptar
+        <>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleInicioPausaCiclo}
+          >
+            {cicloIniciado ? "Pausar Ciclo" : "Iniciar Ciclo"}
           </Button>
-        </DialogActions>
-      </Dialog>
+        </>
+        <>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleReinicioCiclo}
+          >
+            Reiniciar Ciclo
+          </Button>
+        </>
+      </Grid>
     </Container>
   );
 };

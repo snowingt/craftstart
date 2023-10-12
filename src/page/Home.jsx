@@ -5,6 +5,7 @@ import { Herosection } from "../components/Herosection";
 import { HowItWorks } from "../components/HowItWorks";
 import Footer from "../components/Footer";
 import TemporizadorCiclos from "../components/TemporizadorCiclos";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 export const Home = () => {
   return (
@@ -20,12 +21,8 @@ export const Home = () => {
         <ResponsiveAppBar />
         <Herosection />
         <HowItWorks />
-        <TemporizadorCiclos />
-
-        <Footer
-          title="Footer"
-          description="Something here to give the footer a purpose!"
-        />
+        <ScrollToTopButton />
+        <Footer description="Snow" />
       </Container>
     </>
   );

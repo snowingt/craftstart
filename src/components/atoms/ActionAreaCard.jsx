@@ -13,6 +13,7 @@ export default function ActionAreaCard({ titulo, texto, imagen }) {
           component="img"
           height="140"
           image={imagen}
+          sx={{ objectFit: "contain" }}
           alt="green iguana"
         />
         <CardContent>

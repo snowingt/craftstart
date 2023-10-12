@@ -4,8 +4,13 @@ import Box from "@mui/material/Box";
 import React from "react";
 import { Image } from "@mui/icons-material";
 import ergoImg from "../assets/ergoImg1.webp";
+import TemporizadorCiclos from "./TemporizadorCiclos";
 
 export const Herosection = () => {
+  const [appState, setAppState] = React.useState(true);
+  const handleClick = () => {
+    setAppState(!appState);
+  };
   return (
     <>
       <Container>
@@ -54,34 +59,55 @@ export const Herosection = () => {
               y Estilo
             </Typography>
             <Grid item xs={12} md={6}>
-              <Button fullWidth variant="outlined" color="primary">
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                onClick={handleClick}
+              >
                 Ir a la App
               </Button>
             </Grid>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={6}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "1rem",
-            }}
-          >
-            <Box
-              component="img"
+          {appState ? (
+            <Grid
+              item
+              xs={12}
+              md={6}
               sx={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
                 borderRadius: "1rem",
               }}
-              alt="The house from the offer."
-              src={ergoImg}
-            />
-          </Grid>
+            >
+              <Box
+                component="img"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "1rem",
+                }}
+                alt="The house from the offer."
+                src={ergoImg}
+              />
+            </Grid>
+          ) : (
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "1rem",
+              }}
+            >
+              <TemporizadorCiclos />
+            </Grid>
+          )}
         </Grid>
       </Container>
     </>
